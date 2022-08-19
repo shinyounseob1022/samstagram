@@ -90,7 +90,7 @@ public class MemberService {
 //          "member not found");
 //    }
 //
-//    Authentication authentication = tokenProvider.getAuthentication(request.getHeader("Access-Token"));
+//    Authentication authentication = tokenProvider.getAuthentication(request.getHeader("Authorization"));
 //    RefreshToken refreshToken = tokenProvider.isPresentRefreshToken(member);
 //
 //    if (!refreshToken.getValue().equals(request.getHeader("Refresh-Token"))) {
@@ -123,7 +123,7 @@ public class MemberService {
   }
 
   public void tokenToHeaders(TokenDto tokenDto, HttpServletResponse response) {
-    response.addHeader("Access-Token", "Bearer " + tokenDto.getAccessToken());
+    response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
 //    response.addHeader("Refresh-Token", "Bearer " + tokenDto.getRefreshToken());
     response.addHeader("Access-Token-Expire-Time", tokenDto.getAccessTokenExpiresIn().toString());
   }
