@@ -8,6 +8,7 @@ import com.sparta.samstagram.dto.response.MemberResponseDto;
 import com.sparta.samstagram.dto.response.ResponseDto;
 import com.sparta.samstagram.jwt.TokenProvider;
 import com.sparta.samstagram.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -19,23 +20,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
   private final MemberRepository memberRepository;
-
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManagerBuilder authenticationManagerBuilder;
   private final TokenProvider tokenProvider;
-
-  public MemberService(MemberRepository memberRepository,
-                       PasswordEncoder passwordEncoder,
-                       AuthenticationManagerBuilder authenticationManagerBuilder,
-                       TokenProvider tokenProvider) {
-    this.memberRepository = memberRepository;
-    this.passwordEncoder = passwordEncoder;
-    this.authenticationManagerBuilder = authenticationManagerBuilder;
-    this.tokenProvider = tokenProvider;
-  }
 
   @Transactional
   public ResponseDto<?> createMember(MemberRequestDto requestDto) {
@@ -71,6 +62,7 @@ public class MemberService {
 
     TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
     tokenToHeaders(tokenDto, response);
+    System.out.println(tokenDto.getAccessToken());
 
     return ResponseDto.success(
         MemberResponseDto.builder()
@@ -123,7 +115,7 @@ public class MemberService {
   }
 
   public void tokenToHeaders(TokenDto tokenDto, HttpServletResponse response) {
-    response.addHeader("Access-Token", "Bearer " + tokenDto.getAccessToken());
+    response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
 //    response.addHeader("Refresh-Token", "Bearer " + tokenDto.getRefreshToken());
     response.addHeader("Access-Token-Expire-Time", tokenDto.getAccessTokenExpiresIn().toString());
   }

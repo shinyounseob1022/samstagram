@@ -4,19 +4,17 @@ import com.sparta.samstagram.dto.request.LoginRequestDto;
 import com.sparta.samstagram.dto.request.MemberRequestDto;
 import com.sparta.samstagram.dto.response.ResponseDto;
 import com.sparta.samstagram.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/members")
+@RequiredArgsConstructor
 public class MemberController {
 
   private final MemberService memberService;
-
-  public MemberController(MemberService memberService) {
-    this.memberService = memberService;
-  }
 
   @PostMapping("/signup")
   public ResponseDto<?> signup(@RequestBody MemberRequestDto requestDto) {

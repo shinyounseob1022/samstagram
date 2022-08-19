@@ -65,7 +65,7 @@ public class TokenProvider {
 //        .signWith(key, SignatureAlgorithm.HS256)
 //        .compact();
 
-    Member member = ((UserDetailsImpl) authentication.getPrincipal()).getMember();
+//    Member member = ((UserDetailsImpl) authentication.getPrincipal()).getMember();
 
 //    RefreshToken refreshTokenObject = RefreshToken.builder()
 //        .id(member.getId())
