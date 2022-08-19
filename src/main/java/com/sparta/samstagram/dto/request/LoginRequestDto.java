@@ -1,14 +1,11 @@
 package com.sparta.samstagram.dto.request;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class LoginRequestDto {
 
   @NotBlank
@@ -16,5 +13,13 @@ public class LoginRequestDto {
 
   @NotBlank
   private String password;
+
+  @Builder
+  public LoginRequestDto(String memberId, String password) {
+    this.memberId = memberId;
+    this.password = password;
+  }
+
+  public LoginRequestDto() {}
 
 }

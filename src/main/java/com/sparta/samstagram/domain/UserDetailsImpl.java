@@ -17,6 +17,11 @@ public class UserDetailsImpl implements UserDetails {
 
   private Member member;
 
+  public UserDetailsImpl(Member member) {
+    this.member = member;
+  }
+  public UserDetailsImpl() {}
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     SimpleGrantedAuthority authority = new SimpleGrantedAuthority(Authority.ROLE_MEMBER.toString());
@@ -32,7 +37,7 @@ public class UserDetailsImpl implements UserDetails {
 
   @Override
   public String getUsername() {
-    return member.getNickname();
+    return member.getMemberId();
   }
 
   @Override
