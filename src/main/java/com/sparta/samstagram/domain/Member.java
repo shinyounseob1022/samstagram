@@ -26,34 +26,38 @@ public class Member extends Timestamped {
   @JsonIgnore
   private String password;
 
-  @Builder
-  public Member(Long id, String memberId, String nickname, String password) {
-    this.id = id;
-    this.memberId = memberId;
-    this.nickname = nickname;
-    this.password = password;
-  }
-
-  public Member() {}
+  @Column
+  private String authorImgUrl;
 
 //  @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 //  private List<Post> postList;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
-      return false;
-    }
-    Member member = (Member) o;
-    return id != null && Objects.equals(id, member.id);
+//  @Override
+//  public boolean equals(Object o) {
+//    if (this == o) {
+//      return true;
+//    }
+//    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+//      return false;
+//    }
+//    Member member = (Member) o;
+//    return id != null && Objects.equals(id, member.id);
+//  }
+//
+//  @Override
+//  public int hashCode() {
+//    return getClass().hashCode();
+//  }
+
+  @Builder
+  public Member(Long id, String memberId, String nickname, String password, String authorImgUrl) {
+    this.id = id;
+    this.memberId = memberId;
+    this.nickname = nickname;
+    this.password = password;
+    this.authorImgUrl = authorImgUrl;
   }
 
-  @Override
-  public int hashCode() {
-    return getClass().hashCode();
-  }
+  public Member() {}
 
 }
