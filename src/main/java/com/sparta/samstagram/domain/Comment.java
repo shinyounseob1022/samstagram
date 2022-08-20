@@ -36,6 +36,7 @@ public class Comment extends Timestamped {
         this.content = content;
         this.post = post;
         this.member = member;
+
     }
 
     public Comment() {
