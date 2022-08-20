@@ -8,7 +8,8 @@ import java.util.List;
 
 @Getter
 public class CommentResponseDto {
-    private Long id;
+    private Long postId;
+    private Long commentId;
     private String author;
     private String authorImgUrl;
     private String content;
@@ -19,10 +20,11 @@ public class CommentResponseDto {
 
 
     @Builder
-    public CommentResponseDto(Long id,String author, String authorImgUrl,
+    public CommentResponseDto(Long postId,Long commentId,String author, String authorImgUrl,
                            String content, Long commentLikeCnt, Boolean isEditMode,
                            LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.id = id;
+        this.postId = postId;
+        this.commentId = commentId;
         this.author = author;
         this.authorImgUrl = authorImgUrl;
         this.content = content;
