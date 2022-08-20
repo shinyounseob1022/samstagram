@@ -20,14 +20,14 @@ public class CommentResponseDto {
 
     @Builder
     public CommentResponseDto(Long id,String author, String authorImgUrl,
-                           String content, Long commentLikeCnt,
+                           String content, Long commentLikeCnt, Boolean isEditMode,
                            LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.author = author;
         this.authorImgUrl = authorImgUrl;
         this.content = content;
         this.commentLikeCnt = commentLikeCnt;
-        this.isEditMode = false;
+        this.isEditMode =isEditMode;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
