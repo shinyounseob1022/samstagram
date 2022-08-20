@@ -19,21 +19,14 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/{postId}/comments")
-    public ResponseDto<?> createComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto,
+    public ResponseDto<?> createComment(@PathVariable Long postId, @RequestBody CommentRequestDto requestDto,
                                      HttpServletRequest request) {
-        return commentService.createComment(id, requestDto, request);
+        return commentService.createComment(postId, requestDto, request);
     }
 
     @GetMapping("/{postId}/comments")
-    public ResponseDto<?> getAllComment(@PathVariable Long id) {
-        return commentService.getAllComment(id);
-    }
-
-    @PutMapping("/{postId}/comments/{commentId}")
-    public ResponseDto<?> updateComment(@PathVariable Long postId,@PathVariable Long commentId,
-                                        @RequestBody CommentRequestDto requestDto,
-                                        HttpServletRequest request) {
-        return commentService.updateComment(postId,commentId ,requestDto, request);
+    public ResponseDto<?> getAllComment(@PathVariable Long postId) {
+        return commentService.getAllComment(postId);
     }
 
     @DeleteMapping("/{postId}/comments/{commentId}")

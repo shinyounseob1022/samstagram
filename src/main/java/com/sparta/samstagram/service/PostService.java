@@ -217,9 +217,4 @@ public class PostService {
         return tokenProvider.getMemberFromAuthentication();
     }
 
-    @Transactional(readOnly = true)
-    public Post isPresentPost(Long postId) {
-        Optional<Post> optionalPost = postRepository.findById(postId);
-        return optionalPost.orElse(null);
-    }
 }

@@ -31,13 +31,13 @@ public class CommentService {
     private final PostService postService;
 
     @Transactional
-    public ResponseDto<?> createComment(Long id,CommentRequestDto requestDto, HttpServletRequest request) {
+    public ResponseDto<?> createComment(Long postId,CommentRequestDto requestDto, HttpServletRequest request) {
         Member member = validateMember(request);
         if (null == member) {
             return ResponseDto.fail("INVALID_TOKEN", "Authorization is invalid");
         }
 
-        Post post = postService.isPresentPost(id);
+        Post post = postService.isPresentPost(postId);
         if (null == post) {
             return ResponseDto.fail("NOT_FOUND", "post id is not exist");
         }
@@ -51,9 +51,10 @@ public class CommentService {
 
         return ResponseDto.success(
                 CommentResponseDto.builder()
-                        .id(comment.getId())
+                        .postId(post.getId())
+                        .commentId(comment.getId())
                         .author(comment.getMember().getNickname())
-                        .authorImgUrl(post.getMember().getAuthorImgUrl())
+                        .authorImgUrl(post.getMember().getMemberImgUrl())
                         .content(comment.getContent())
                         .commentLikeCnt(commentLikeRepository.countByComment(comment))
                         .isEditMode(false)
@@ -76,9 +77,10 @@ public class CommentService {
         for (Comment comment : commentList) {
             commentResponseDtoList.add(
                     CommentResponseDto.builder()
-                            .id(comment.getId())
+                            .postId(post.getId())
+                            .commentId(comment.getId())
                             .author(comment.getMember().getNickname())
-                            .authorImgUrl(post.getMember().getAuthorImgUrl())
+                            .authorImgUrl(post.getMember().getMemberImgUrl())
                             .content(comment.getContent())
                             .commentLikeCnt(commentLikeRepository.countByComment(comment))
                             .isEditMode(false)
@@ -88,42 +90,6 @@ public class CommentService {
             );
         }
         return ResponseDto.success(commentResponseDtoList);
-    }
-
-    @Transactional
-    public ResponseDto<?> updateComment(Long postId,Long commentId, CommentRequestDto requestDto, HttpServletRequest request) {
-        Member member = validateMember(request);
-        if (null == member) {
-            return ResponseDto.fail("INVALID_TOKEN", "Authorization is invalid");
-        }
-
-        Post post = postService.isPresentPost(postId);
-        if (null == post) {
-            return ResponseDto.fail("NOT_FOUND", "post id is not exist");
-        }
-
-        Comment comment = isPresentComment(commentId);
-        if (null == comment) {
-            return ResponseDto.fail("NOT_FOUND", "comment id is not exist");
-        }
-
-        if (comment.validateMember(member)) {
-            return ResponseDto.fail("BAD_REQUEST", "only author can update");
-        }
-
-        comment.update(requestDto);
-        return ResponseDto.success(
-                CommentResponseDto.builder()
-                        .id(comment.getId())
-                        .author(comment.getMember().getNickname())
-                        .authorImgUrl(post.getMember().getAuthorImgUrl())
-                        .content(comment.getContent())
-                        .commentLikeCnt(commentLikeRepository.countByComment(comment))
-                        .isEditMode(false)
-                        .createdAt(comment.getCreatedAt())
-                        .modifiedAt(comment.getModifiedAt())
-                        .build()
-        );
     }
 
     @Transactional
@@ -160,9 +126,9 @@ public class CommentService {
 
     @Transactional
     public Member validateMember(HttpServletRequest request) {
-        if (!tokenProvider.validateToken(request.getHeader("Authorization"))) {
-            return null;
-        }
+//        if (!tokenProvider.validateToken(request.getHeader("Authorization"))) {
+//            return null;
+//        }
         return tokenProvider.getMemberFromAuthentication();
     }
 }
