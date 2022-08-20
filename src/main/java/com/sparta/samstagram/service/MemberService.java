@@ -15,8 +15,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -27,18 +30,28 @@ public class MemberService {
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManagerBuilder authenticationManagerBuilder;
   private final TokenProvider tokenProvider;
+  private final S3UploadService s3UploadService;
 
   @Transactional
-  public ResponseDto<?> createMember(MemberRequestDto requestDto) {
+  public ResponseDto<?> createMember(MemberRequestDto requestDto,
+                                     MultipartFile multipartFile) throws IOException {
+
     if (null != isPresentMember(requestDto.getNickname())) {
-      return ResponseDto.fail("DUPLICATED_NICKNAME",
+      return ResponseDto.fail("DUPLICATED_MEMBERID",
           "이미 존재하는 아이디입니다.");
+    }
+
+    String memberImgUrl = null;
+    if (!multipartFile.isEmpty()) {
+      memberImgUrl = s3UploadService.upload(multipartFile, "samstagram/authorImg");
+      System.out.println("authorImgUrl: "+memberImgUrl);
     }
 
     Member member = Member.builder()
             .memberId(requestDto.getMemberId())
             .nickname(requestDto.getNickname())
             .password(passwordEncoder.encode(requestDto.getPassword()))
+            .memberImgUrl(memberImgUrl)
             .build();
     memberRepository.save(member);
     return ResponseDto.success(
@@ -53,7 +66,7 @@ public class MemberService {
     Member member = isPresentMember(requestDto.getMemberId());
     if (null == member) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "존재하지 않는 회원정보입니다.");
+          "존재하지 않는 아이디입니다.");
     }
 
     UsernamePasswordAuthenticationToken authenticationToken =

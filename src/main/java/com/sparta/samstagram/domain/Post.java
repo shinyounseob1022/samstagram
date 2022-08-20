@@ -16,9 +16,6 @@ public class Post extends Timestamped{
     private Long id;
 
     @Column(nullable = false)
-    private String title;
-
-    @Column(nullable = false)
     private String content;
 
     @Column
@@ -32,14 +29,16 @@ public class Post extends Timestamped{
     private List<PostLike> postLikes;
 
     public void update(PostRequestDto postRequestDto, String imgUrl) {
-        this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
         this.imgUrl = imgUrl;
     }
 
+    public boolean validateMember(Member member) {
+        return !this.member.equals(member);
+    }
+
     @Builder
-    public Post(String title, String content, String imgUrl, Member member) {
-        this.title = title;
+    public Post(String content, String imgUrl, Member member) {
         this.content = content;
         this.imgUrl = imgUrl;
         this.member = member;
