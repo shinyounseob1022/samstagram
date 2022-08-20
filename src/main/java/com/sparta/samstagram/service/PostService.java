@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -70,6 +71,13 @@ public class PostService {
         );
     }
 
+
+
+    @Transactional(readOnly = true)
+    public Post isPresentPost(Long id) {
+        Optional<Post> optionalPost = postRepository.findById(id);
+        return optionalPost.orElse(null);
+    }
 
     @Transactional
     public Member validateMember() {
