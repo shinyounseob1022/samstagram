@@ -6,8 +6,11 @@ import com.sparta.samstagram.dto.response.ResponseDto;
 import com.sparta.samstagram.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/members")
@@ -17,8 +20,9 @@ public class MemberController {
   private final MemberService memberService;
 
   @PostMapping("/signup")
-  public ResponseDto<?> signup(@RequestBody MemberRequestDto requestDto) {
-    return memberService.createMember(requestDto);
+  public ResponseDto<?> signup(@RequestPart("data") MemberRequestDto requestDto,
+                               @RequestPart("img") MultipartFile multipartFile) throws IOException {
+    return memberService.createMember(requestDto, multipartFile);
   }
 
   @PostMapping("/login")

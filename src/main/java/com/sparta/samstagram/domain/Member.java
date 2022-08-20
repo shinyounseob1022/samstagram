@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -27,35 +28,35 @@ public class Member extends Timestamped {
   private String password;
 
   @Column
-  private String authorImgUrl;
+  private String memberImgUrl;
 
-//  @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-//  private List<Post> postList;
+  @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  private List<Post> postList;
 
-//  @Override
-//  public boolean equals(Object o) {
-//    if (this == o) {
-//      return true;
-//    }
-//    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
-//      return false;
-//    }
-//    Member member = (Member) o;
-//    return id != null && Objects.equals(id, member.id);
-//  }
-//
-//  @Override
-//  public int hashCode() {
-//    return getClass().hashCode();
-//  }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+      return false;
+    }
+    Member member = (Member) o;
+    return id != null && Objects.equals(id, member.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
+  }
 
   @Builder
-  public Member(Long id, String memberId, String nickname, String password, String authorImgUrl) {
+  public Member(Long id, String memberId, String nickname, String password, String memberImgUrl) {
     this.id = id;
     this.memberId = memberId;
     this.nickname = nickname;
     this.password = password;
-    this.authorImgUrl = authorImgUrl;
+    this.memberImgUrl = memberImgUrl;
   }
 
   public Member() {}
