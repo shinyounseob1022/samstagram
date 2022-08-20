@@ -202,6 +202,13 @@ public class PostService {
         return ResponseDto.success(null);
     }
 
+
+    @Transactional(readOnly = true)
+    public Post isPresentPost(Long id) {
+        Optional<Post> optionalPost = postRepository.findById(id);
+        return optionalPost.orElse(null);
+    }
+
     @Transactional
     public Member validateMember() {
 //        if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {

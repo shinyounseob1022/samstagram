@@ -1,5 +1,7 @@
 package com.sparta.samstagram.domain;
 
+import com.sparta.samstagram.dto.request.CommentRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -26,4 +28,26 @@ public class Comment extends Timestamped {
 
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentLike> commentLikes;
+
+
+
+    @Builder
+    public Comment(String content, Post post, Member member) {
+        this.content = content;
+        this.post = post;
+        this.member = member;
+
+    }
+
+    public Comment() {
+
+    }
+
+    public void update(CommentRequestDto commentRequestDto) {
+        this.content = commentRequestDto.getContent();
+    }
+
+    public boolean validateMember(Member member) {
+        return !this.member.equals(member);
+    }
 }
