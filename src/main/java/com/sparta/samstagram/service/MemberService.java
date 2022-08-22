@@ -36,7 +36,7 @@ public class MemberService {
   public ResponseDto<?> createMember(MemberRequestDto requestDto,
                                      MultipartFile multipartFile) throws IOException {
 
-    if (null != isPresentMember(requestDto.getNickname())) {
+    if (null != isPresentMember(requestDto.getMemberId())) {
       return ResponseDto.fail("DUPLICATED_MEMBERID",
           "이미 존재하는 아이디입니다.");
     }
