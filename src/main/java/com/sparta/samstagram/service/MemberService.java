@@ -41,6 +41,11 @@ public class MemberService {
           "이미 존재하는 아이디입니다.");
     }
 
+    if (null != memberRepository.findByNickname(requestDto.getNickname())) {
+      return ResponseDto.fail("DUPLICATED_NICKNAME",
+              "이미 존재하는 닉네임입니다.");
+    }
+
     String memberImgUrl = null;
     if (!multipartFile.isEmpty()) {
       memberImgUrl = s3UploadService.upload(multipartFile, "samstagram/authorImg");
@@ -124,6 +129,7 @@ public class MemberService {
   @Transactional(readOnly = true)
   public Member isPresentMember(String memberId) {
     Optional<Member> optionalMember = memberRepository.findByMemberId(memberId);
+    System.out.println(optionalMember);
     return optionalMember.orElse(null);
   }
 
