@@ -34,7 +34,7 @@ public class LikeService {
     public ResponseDto<?> likePost(Long postId, HttpServletRequest request) {
         Member member = validateMember(request);
         if (null == member) {
-            return ResponseDto.fail("INVALID_TOKEN", "refresh token is invalid");
+            return ResponseDto.fail("INVALID_TOKEN", "Authorization is invalid");
         }
 
         Post post = postService.isPresentPost(postId);
@@ -73,7 +73,7 @@ public class LikeService {
     public ResponseDto<?> likeComment(Long postId, Long commentId, HttpServletRequest request) {
         Member member = validateMember(request);
         if (null == member) {
-            return ResponseDto.fail("INVALID_TOKEN", "refresh token is invalid");
+            return ResponseDto.fail("INVALID_TOKEN", "Authorization is invalid");
         }
 
         Post post = postService.isPresentPost(postId);
