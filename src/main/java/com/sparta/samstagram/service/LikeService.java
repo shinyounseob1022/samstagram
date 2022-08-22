@@ -33,6 +33,7 @@ public class LikeService {
     @Transactional
     public ResponseDto<?> likePost(Long postId, HttpServletRequest request) {
         Member member = validateMember(request);
+
         if (null == member) {
             return ResponseDto.fail("INVALID_TOKEN", "Authorization is invalid");
         }

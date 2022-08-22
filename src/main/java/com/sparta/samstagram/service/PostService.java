@@ -1,5 +1,6 @@
 package com.sparta.samstagram.service;
 
+import com.sparta.samstagram.domain.Comment;
 import com.sparta.samstagram.domain.Member;
 import com.sparta.samstagram.domain.Post;
 import com.sparta.samstagram.dto.request.PostRequestDto;
@@ -109,7 +110,7 @@ public class PostService {
         return ResponseDto.success(
                 PostResponseDto.builder()
                         .postId(post.getId())
-                        .author(post.getMember().getMemberId())
+                        .author(post.getMember().getNickname())
                         .authorImgUrl((post.getMember().getMemberImgUrl()))
                         .content(post.getContent())
                         .imgUrl(post.getImgUrl())
