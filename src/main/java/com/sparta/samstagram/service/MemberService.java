@@ -36,12 +36,12 @@ public class MemberService {
   public ResponseDto<?> createMember(MemberRequestDto requestDto,
                                      MultipartFile multipartFile) throws IOException {
 
-    if (null != isPresentMember(requestDto.getMemberId())) {
+    if (null != isPresentMemberByMemberId(requestDto.getMemberId())) {
       return ResponseDto.fail("DUPLICATED_MEMBERID",
           "이미 존재하는 아이디입니다.");
     }
 
-    if (null != memberRepository.findByNickname(requestDto.getNickname())) {
+    if (null != isPresentMemberByNickname(requestDto.getNickname())) {
       return ResponseDto.fail("DUPLICATED_NICKNAME",
               "이미 존재하는 닉네임입니다.");
     }
@@ -68,7 +68,7 @@ public class MemberService {
 
   @Transactional
   public ResponseDto<?> login(LoginRequestDto requestDto, HttpServletResponse response) {
-    Member member = isPresentMember(requestDto.getMemberId());
+    Member member = isPresentMemberByMemberId(requestDto.getMemberId());
     if (null == member) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
           "존재하지 않는 아이디입니다.");
@@ -127,8 +127,15 @@ public class MemberService {
 //  }
 
   @Transactional(readOnly = true)
-  public Member isPresentMember(String memberId) {
+  public Member isPresentMemberByMemberId(String memberId) {
     Optional<Member> optionalMember = memberRepository.findByMemberId(memberId);
+    System.out.println(optionalMember);
+    return optionalMember.orElse(null);
+  }
+
+  @Transactional(readOnly = true)
+  public Member isPresentMemberByNickname(String nickname) {
+    Optional<Member> optionalMember = memberRepository.findByNickname(nickname);
     System.out.println(optionalMember);
     return optionalMember.orElse(null);
   }
