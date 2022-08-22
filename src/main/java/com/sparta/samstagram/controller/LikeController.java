@@ -11,15 +11,21 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/like")
+@RequestMapping("/posts")
 @RequiredArgsConstructor
 public class LikeController {
 
     private final LikeService likeService;
 
-    @PostMapping("/posts/{postId}")
+    @PostMapping("/{postId}/like")
     public ResponseDto<?> likePost(@PathVariable Long postId, HttpServletRequest request
     ) {
         return likeService.likePost(postId, request);
+    }
+
+    @PostMapping("/{postId}/comments/{commentId}/like")
+    public ResponseDto<?> likeComment(@PathVariable Long postId, @PathVariable Long commentId, HttpServletRequest request
+    ) {
+        return likeService.likeComment(postId, commentId, request);
     }
 }
