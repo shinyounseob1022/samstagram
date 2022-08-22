@@ -93,6 +93,41 @@ public class CommentService {
     }
 
     @Transactional
+    public ResponseDto<?> updateComment(Long postId,Long commentId, CommentRequestDto requestDto, HttpServletRequest request) {
+        Member member = validateMember(request);
+        if (null == member) {
+            return ResponseDto.fail("INVALID_TOKEN", "Authorization is invalid");
+        }
+
+        Post post = postService.isPresentPost(postId);
+        if (null == post) {
+            return ResponseDto.fail("NOT_FOUND", "post id is not exist");
+        }
+
+        Comment comment = isPresentComment(commentId);
+        if (null == comment) {
+            return ResponseDto.fail("NOT_FOUND", "comment id is not exist");
+        }
+
+        if (comment.validateMember(member)) {
+            return ResponseDto.fail("BAD_REQUEST", "only author can update");
+        }
+
+        return ResponseDto.success(
+                CommentResponseDto.builder()
+                        .commentId(comment.getId())
+                        .author(comment.getMember().getNickname())
+                        .authorImgUrl(post.getMember().getMemberImgUrl())
+                        .content(comment.getContent())
+                        .commentLikeCnt(commentLikeRepository.countByComment(comment))
+                        .isEditMode(false)
+                        .createdAt(comment.getCreatedAt())
+                        .modifiedAt(comment.getModifiedAt())
+                        .build()
+        );
+    }
+
+    @Transactional
     public ResponseDto<?> deleteComment(Long postId,Long commentId, HttpServletRequest request) {
         Member member = validateMember(request);
         if (null == member) {
