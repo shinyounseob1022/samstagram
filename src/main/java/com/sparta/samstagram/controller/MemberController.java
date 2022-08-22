@@ -31,6 +31,21 @@ public class MemberController {
     return memberService.login(requestDto, response);
   }
 
+  @GetMapping("/mypage/{nickname}")
+  public ResponseDto<?> getMypage(@PathVariable String nickname) {
+    return memberService.getMypage(nickname);
+  }
+
+  @PatchMapping("/mypage/{nickname}")
+  public ResponseDto<?> editMypage(@PathVariable String nickname, @RequestParam MultipartFile multipartFile) throws IOException {
+    return memberService.editMypage(nickname, multipartFile);
+  }
+
+  @GetMapping("/profile/{nickname}")
+  public ResponseDto<?> getProfile(@PathVariable String nickname) {
+    return memberService.getProfile(nickname);
+  }
+
 //  @RequestMapping(value = "/api/auth/member/reissue", method = RequestMethod.POST)
 //  public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {
 //    return memberService.reissue(request, response);

@@ -1,6 +1,7 @@
 package com.sparta.samstagram.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sparta.samstagram.dto.request.PostRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.Hibernate;
@@ -33,6 +34,9 @@ public class Member extends Timestamped {
   @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private List<Post> postList;
 
+  @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  private List<PostLike> postLikeList;
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -48,6 +52,10 @@ public class Member extends Timestamped {
   @Override
   public int hashCode() {
     return getClass().hashCode();
+  }
+
+  public void update(String memberImgUrl) {
+    this.memberImgUrl = memberImgUrl;
   }
 
   @Builder
