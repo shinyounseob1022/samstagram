@@ -1,8 +1,6 @@
 package com.sparta.samstagram.service;
 
-import com.sparta.samstagram.domain.Comment;
-import com.sparta.samstagram.domain.Member;
-import com.sparta.samstagram.domain.Post;
+import com.sparta.samstagram.domain.*;
 import com.sparta.samstagram.dto.request.CommentRequestDto;
 import com.sparta.samstagram.dto.response.CommentResponseDto;
 import com.sparta.samstagram.dto.response.ResponseDto;
@@ -29,6 +27,8 @@ public class CommentService {
     private final TokenProvider tokenProvider;
 
     private final PostService postService;
+
+    private final MemberService memberService;
 
     @Transactional
     public ResponseDto<?> createComment(Long postId,CommentRequestDto requestDto, HttpServletRequest request) {
@@ -65,7 +65,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<?> getAllComment(Long postId) {
+    public ResponseDto<?> getAllComment(Long postId, String nickname) {
         Post post = postService.isPresentPost(postId);
         if (null == post) {
             return ResponseDto.fail("NOT_FOUND", "post id is not exist");
@@ -75,6 +75,7 @@ public class CommentService {
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
         for (Comment comment : commentList) {
+
             commentResponseDtoList.add(
                     CommentResponseDto.builder()
                             .postId(post.getId())
@@ -84,12 +85,26 @@ public class CommentService {
                             .content(comment.getContent())
                             .commentLikeCnt(commentLikeRepository.countByComment(comment))
                             .isEditMode(false)
+                            .isLike(isLikeMethod(comment, nickname))
                             .createdAt(comment.getCreatedAt())
                             .modifiedAt(comment.getModifiedAt())
                             .build()
             );
         }
         return ResponseDto.success(commentResponseDtoList);
+    }
+
+    @Transactional
+    public boolean isLikeMethod(Comment comment, String nickname) {
+        List<CommentLike> commentLikeList = comment.getCommentLikes();
+        Member member = memberService.isPresentMemberByNickname(nickname);
+        boolean isLike = false;
+        for (CommentLike commentLike : commentLikeList) {
+            if (commentLike.getMember().getId() == member.getId()) {
+                isLike = true;
+            }
+        }
+        return isLike;
     }
 
     @Transactional
