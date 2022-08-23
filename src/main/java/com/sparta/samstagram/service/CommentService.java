@@ -54,7 +54,7 @@ public class CommentService {
                         .postId(post.getId())
                         .commentId(comment.getId())
                         .author(comment.getMember().getNickname())
-                        .authorImgUrl(post.getMember().getMemberImgUrl())
+                        .authorImgUrl(comment.getMember().getMemberImgUrl())
                         .content(comment.getContent())
                         .commentLikeCnt(commentLikeRepository.countByComment(comment))
                         .isEditMode(false)
