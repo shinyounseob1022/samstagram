@@ -21,12 +21,14 @@ public class PostResponseDto {
     private boolean isEditMode;
     @JsonProperty(value = "isModalMode")
     private boolean isModalMode;
+    @JsonProperty(value = "isLike")
+    private boolean isLike;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
     @Builder
     public PostResponseDto(Long postId, String author, String authorImgUrl, String content, String imgUrl,
-                           Long postLikeCnt, Long commentCnt, boolean isEditMode, boolean isModalMode,
+                           Long postLikeCnt, Long commentCnt, boolean isEditMode, boolean isModalMode, boolean isLike,
                            LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.postId = postId;
         this.author = author;
@@ -37,6 +39,7 @@ public class PostResponseDto {
         this.commentCnt = commentCnt;
         this.isEditMode = isEditMode;
         this.isModalMode = isModalMode;
+        this.isLike = isLike;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
@@ -51,5 +54,10 @@ public class PostResponseDto {
     @JsonIgnore
     public boolean isModalMode() {
         return isModalMode;
+    }
+
+    @JsonIgnore
+    public boolean isLike() {
+        return isLike;
     }
 }

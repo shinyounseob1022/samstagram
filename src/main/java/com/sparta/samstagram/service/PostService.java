@@ -3,6 +3,7 @@ package com.sparta.samstagram.service;
 import com.sparta.samstagram.domain.Comment;
 import com.sparta.samstagram.domain.Member;
 import com.sparta.samstagram.domain.Post;
+import com.sparta.samstagram.domain.PostLike;
 import com.sparta.samstagram.dto.request.PostRequestDto;
 import com.sparta.samstagram.dto.response.PostResponseDto;
 import com.sparta.samstagram.dto.response.ResponseDto;
@@ -30,6 +31,7 @@ public class PostService {
     private final S3UploadService s3UploadService;
     private final PostLikeRepository postLikeRepository;
     private final CommentRepository commentRepository;
+    private final MemberService memberService;
 
     public ResponseDto<?> createPost(PostRequestDto requestDto,
                                      MultipartFile multipartFile,
@@ -75,7 +77,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<?> getAllPost() {
+    public ResponseDto<?> getAllPost(String nickname) {
         List<Post> postList = postRepository.findAllByOrderByModifiedAtDesc();
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
 
@@ -91,6 +93,7 @@ public class PostService {
                             .postLikeCnt(postLikeRepository.countByPost(post))
                             .commentCnt(commentRepository.countByPost(post))
                             .isModalMode(false)
+                            .isLike(isLikeMethod(post, nickname))
                             .createdAt(post.getCreatedAt())
                             .modifiedAt(post.getModifiedAt())
                             .build()
@@ -101,7 +104,20 @@ public class PostService {
     }
 
     @Transactional
-    public ResponseDto<?> getPost(Long postId) {
+    public boolean isLikeMethod(Post post, String nickname) {
+        List<PostLike> postLikeList = post.getPostLikes();
+        Member member = memberService.isPresentMemberByNickname(nickname);
+        boolean isLike = false;
+        for (PostLike postLike : postLikeList) {
+            if (postLike.getMember().getId() == member.getId()) {
+                isLike = true;
+            }
+        }
+        return isLike;
+    }
+
+    @Transactional
+    public ResponseDto<?> getPost(Long postId, String nickname) {
         Post post = isPresentPost(postId);
         if (null == post) {
             return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
@@ -118,6 +134,7 @@ public class PostService {
                         .commentCnt(commentRepository.countByPost(post))
                         .isEditMode(false)
                         .isModalMode(false)
+                        .isLike(isLikeMethod(post, nickname))
                         .createdAt(post.getCreatedAt())
                         .modifiedAt(post.getModifiedAt())
                         .build()
@@ -212,6 +229,12 @@ public class PostService {
     public Post isPresentPost(Long id) {
         Optional<Post> optionalPost = postRepository.findById(id);
         return optionalPost.orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public PostLike isPresentPostLike(Member member, Post post) {
+        Optional<PostLike> optionalPostLike = postLikeRepository.findByMemberAndPost(member, post);
+        return optionalPostLike.orElse(null);
     }
 
     @Transactional

@@ -24,9 +24,9 @@ public class CommentController {
         return commentService.createComment(postId, requestDto, request);
     }
 
-    @GetMapping("/{postId}/comments")
-    public ResponseDto<?> getAllComment(@PathVariable Long postId) {
-        return commentService.getAllComment(postId);
+    @GetMapping("/{postId}/comments/{nickname}")
+    public ResponseDto<?> getAllComment(@PathVariable Long postId, @PathVariable String nickname) {
+        return commentService.getAllComment(postId, nickname);
     }
 
     @DeleteMapping("/{postId}/comments/{commentId}")

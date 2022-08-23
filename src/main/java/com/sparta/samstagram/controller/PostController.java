@@ -23,14 +23,14 @@ public class PostController {
         return postService.createPost(requestDto, multipartFile, request);
     }
 
-    @GetMapping
-    public ResponseDto<?> getAllPosts() {
-        return postService.getAllPost();
+    @GetMapping("/all/{nickname}")
+    public ResponseDto<?> getAllPosts(@PathVariable String nickname) {
+        return postService.getAllPost(nickname);
     }
 
-    @GetMapping("/{postId}")
-    public ResponseDto<?> getPost(@PathVariable Long postId) {
-        return postService.getPost(postId);
+    @GetMapping("/{postId}/{nickname}")
+    public ResponseDto<?> getPost(@PathVariable Long postId, @PathVariable String nickname) {
+        return postService.getPost(postId, nickname);
     }
 
     @PutMapping("/{postId}")
