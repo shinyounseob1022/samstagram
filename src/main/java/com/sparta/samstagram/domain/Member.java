@@ -1,7 +1,6 @@
 package com.sparta.samstagram.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sparta.samstagram.dto.request.PostRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.Hibernate;

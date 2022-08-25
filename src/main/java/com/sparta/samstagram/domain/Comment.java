@@ -1,6 +1,5 @@
 package com.sparta.samstagram.domain;
 
-import com.sparta.samstagram.dto.request.CommentRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,6 +1,5 @@
 package com.sparta.samstagram.dto.response;
 
-import com.sparta.samstagram.domain.PostLike;
 import lombok.Builder;
 import lombok.Getter;
 

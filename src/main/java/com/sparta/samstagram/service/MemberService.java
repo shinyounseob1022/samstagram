@@ -11,7 +11,6 @@ import com.sparta.samstagram.jwt.TokenProvider;
 import com.sparta.samstagram.repository.CommentRepository;
 import com.sparta.samstagram.repository.MemberRepository;
 import com.sparta.samstagram.repository.PostLikeRepository;
-import com.sparta.samstagram.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -193,43 +191,6 @@ public class MemberService {
     );
   }
 
-//  @Transactional
-//  public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {
-//    if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
-//      return ResponseDto.fail("INVALID_TOKEN", "refresh token is invalid");
-//    }
-//    Member member = tokenProvider.getMemberFromAuthentication();
-//    if (null == member) {
-//      return ResponseDto.fail("MEMBER_NOT_FOUND",
-//          "member not found");
-//    }
-//
-//    Authentication authentication = tokenProvider.getAuthentication(request.getHeader("Authorization"));
-//    RefreshToken refreshToken = tokenProvider.isPresentRefreshToken(member);
-//
-//    if (!refreshToken.getValue().equals(request.getHeader("Refresh-Token"))) {
-//      return ResponseDto.fail("INVALID_TOKEN", "refresh token is invalid");
-//    }
-//
-//    TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
-//    refreshToken.updateValue(tokenDto.getRefreshToken());
-//    tokenToHeaders(tokenDto, response);
-//    return ResponseDto.success("success");
-//  }
-//
-//  public ResponseDto<?> logout(HttpServletRequest request) {
-//    if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
-//      return ResponseDto.fail("INVALID_TOKEN", "refresh token is invalid");
-//    }
-//    Member member = tokenProvider.getMemberFromAuthentication();
-//    if (null == member) {
-//      return ResponseDto.fail("MEMBER_NOT_FOUND",
-//          "member not found");
-//    }
-//
-//    return tokenProvider.deleteRefreshToken(member);
-//  }
-
   @Transactional(readOnly = true)
   public Member isPresentMemberByMemberId(String memberId) {
     Optional<Member> optionalMember = memberRepository.findByMemberId(memberId);
@@ -246,7 +207,6 @@ public class MemberService {
 
   public void tokenToHeaders(TokenDto tokenDto, HttpServletResponse response) {
     response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
-//    response.addHeader("Refresh-Token", "Bearer " + tokenDto.getRefreshToken());
     response.addHeader("Access-Token-Expire-Time", tokenDto.getAccessTokenExpiresIn().toString());
   }
 

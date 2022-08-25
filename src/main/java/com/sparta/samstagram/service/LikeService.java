@@ -1,7 +1,6 @@
 package com.sparta.samstagram.service;
 
 import com.sparta.samstagram.domain.*;
-import com.sparta.samstagram.dto.response.CommentResponseDto;
 import com.sparta.samstagram.dto.response.LikeCommentResponseDto;
 import com.sparta.samstagram.dto.response.LikePostResponseDto;
 import com.sparta.samstagram.dto.response.ResponseDto;
@@ -140,9 +139,6 @@ public class LikeService {
 
     @Transactional
     public Member validateMember(HttpServletRequest request) {
-//        if (!tokenProvider.validateToken(request.getHeader("Authorization"))) {
-//            return null;
-//        }
         return tokenProvider.getMemberFromAuthentication();
     }
 

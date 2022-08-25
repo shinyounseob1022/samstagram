@@ -1,15 +1,12 @@
 package com.sparta.samstagram.controller;
 
 import com.sparta.samstagram.dto.request.CommentRequestDto;
-import com.sparta.samstagram.dto.request.PostRequestDto;
 import com.sparta.samstagram.dto.response.ResponseDto;
 import com.sparta.samstagram.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/posts")

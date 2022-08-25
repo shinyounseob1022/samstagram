@@ -10,7 +10,6 @@ import com.sparta.samstagram.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -176,9 +175,6 @@ public class CommentService {
 
     @Transactional
     public Member validateMember(HttpServletRequest request) {
-//        if (!tokenProvider.validateToken(request.getHeader("Authorization"))) {
-//            return null;
-//        }
         return tokenProvider.getMemberFromAuthentication();
     }
 }

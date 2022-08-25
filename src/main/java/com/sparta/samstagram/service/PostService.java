@@ -1,6 +1,5 @@
 package com.sparta.samstagram.service;
 
-import com.sparta.samstagram.domain.Comment;
 import com.sparta.samstagram.domain.Member;
 import com.sparta.samstagram.domain.Post;
 import com.sparta.samstagram.domain.PostLike;
@@ -239,9 +238,6 @@ public class PostService {
 
     @Transactional
     public Member validateMember() {
-//        if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
-//            return null;
-//        }
         return tokenProvider.getMemberFromAuthentication();
     }
 

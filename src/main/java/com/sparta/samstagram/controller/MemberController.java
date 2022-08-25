@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -46,13 +45,4 @@ public class MemberController {
     return memberService.getProfile(nickname);
   }
 
-//  @RequestMapping(value = "/api/auth/member/reissue", method = RequestMethod.POST)
-//  public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {
-//    return memberService.reissue(request, response);
-//  }
-//
-//  @RequestMapping(value = "/api/auth/member/logout", method = RequestMethod.POST)
-//  public ResponseDto<?> logout(HttpServletRequest request) {
-//    return memberService.logout(request);
-//  }
 }
