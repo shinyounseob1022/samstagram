@@ -1,8 +1,10 @@
 package com.sparta.samstagram.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,14 +18,16 @@ public class CommentResponseDto {
     private Long commentLikeCnt;
     private Boolean isEditMode;
     private Boolean isLike;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private  LocalDate modifiedAt;
 
 
     @Builder
     public CommentResponseDto(Long postId,Long commentId,String author, String authorImgUrl,
                            String content, Long commentLikeCnt, Boolean isEditMode, Boolean isLike,
-                           LocalDateTime createdAt, LocalDateTime modifiedAt) {
+                              LocalDate createdAt,  LocalDate modifiedAt) {
         this.postId = postId;
         this.commentId = commentId;
         this.author = author;
